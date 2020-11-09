@@ -41,7 +41,7 @@ export default function LOC() {
             <hr/>
             <h3>Result</h3>
             With the provided parameters, the Hand Helicopter <b>{netForce > 0 ? 'can' : 'cannot'}</b> take off.<br/>
-            The net force is <code>{Math.abs(netForce)}N</code> {netForce > 0 ? 'upward' : (netForce < 0 ? 'downward' : '(hovering)')}.<br/>
+            The net force is <code>{Math.abs(netForce)} N</code> {netForce > 0 ? 'upward' : (netForce < 0 ? 'downward' : '(hovering)')}.<br/>
             <Button color={'danger'} outline={true} onClick={reset}>Reset</Button>
           </div>
           <hr/>
