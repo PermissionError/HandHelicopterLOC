@@ -8,6 +8,10 @@ export default function LOC() {
 
   const calculate = (event) => {
     event.preventDefault();
+    if(event.target.r.value <= 0) {
+      event.target.r.className = event.target.r.className + ' is-invalid';
+      return;
+    }
     const G = 6.674 * (10**-11);
     // Fnet = Cl × ρ x v^2 x A / 2 - G (m1×m2) / r^2
     let F = event.target.cl.value * event.target.p.value * (event.target.v.value ** 2) * event.target.A.value / 2 - G * event.target.m1.value * event.target.m2.value / (event.target.r.value ** 2);
@@ -49,36 +53,36 @@ export default function LOC() {
           <Row className={'mx-1'}>
             <FormGroup className={'col-5 px-0'}>
               <label htmlFor={'cl'}>Lift Coefficient (Cl)</label>
-              <Input id={'cl'} type={'number'} required={true}/>
+              <Input id={'cl'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
             <FormGroup className={'col-5 px-0 ml-auto'}>
               <label htmlFor={'A'}>Total Blade Area (A) (m<sup>2</sup>)</label>
-              <Input id={'A'} type={'number'} required={true}/>
+              <Input id={'A'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
           </Row>
           <Row className={'mx-1'}>
             <FormGroup className={'col-5 px-0'}>
               <label htmlFor={'p'}>Atmospheric Density (ρ) (kg m<sup>-3</sup>)</label>
-              <Input id={'p'} type={'number'} required={true}/>
+              <Input id={'p'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
             <FormGroup className={'col-5 px-0 ml-auto'}>
               <label htmlFor={'m1'}>Mass of the Celestial Body (m<sub>1</sub>) (kg)</label>
-              <Input id={'m1'} type={'number'} required={true}/>
+              <Input id={'m1'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
           </Row>
           <Row className={'mx-1'}>
             <FormGroup className={'col-5 px-0'}>
               <label htmlFor={'v'}>Blade Velocity (v) (m s<sup>-1</sup>)</label>
-              <Input id={'v'} type={'number'} required={true}/>
+              <Input id={'v'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
             <FormGroup className={'col-5 px-0 ml-auto'}>
               <label htmlFor={'m2'}>Mass of the Hand Helicopter (m<sub>2</sub>) (kg)</label>
-              <Input id={'m2'} type={'number'} required={true}/>
+              <Input id={'m2'} type={'number'} required={true} step={'any'}/>
             </FormGroup>
           </Row>
           <FormGroup>
             <label htmlFor={'r'}>Distance between the Centre of the Celestial Body and the Hand Helicopter (r) (m)</label>
-            <Input id={'r'} type={'number'} required={true} onInput={(event) => {if(event.value <= 0) event.target.value = 0;}}/>
+            <Input id={'r'} type={'number'} required={true} step={'any'}/>
           </FormGroup>
           <Button color={'primary'} outline={true} type={'submit'}>Calculate!</Button>
         </Form>
