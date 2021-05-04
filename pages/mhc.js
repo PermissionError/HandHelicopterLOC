@@ -12,7 +12,10 @@ c) In the for loop, have a reset every time, since vh will be changing this will
 d) Change the scale on time
    */
   const [accChart, setAccChart] = useState();
-  const [speedChart, setSpeedChart] = useState();
+  const [horiVelChart, setHoriVelChart] = useState();
+  const [vertVelChart, setVertVelChart] = useState();
+  const [displacementChart, setDisplacementChart] = useState();
+
 
   const router = useRouter();
 
@@ -28,60 +31,119 @@ d) Change the scale on time
     event.preventDefault();
     document.getElementById('calculating').hidden = false;
 
-    fetch('/api/graph', {method: 'POST', body: JSON.stringify({Cl: event.target.Cl.value}).then(r => {
-      r.json().then(data => {
-        /*setAccChart(
-          <Chart
-            width={'100%'}
-            height={'50vh'}
-            chartType={'LineChart'}
-            options={{
-              title: 'Hand Helicopter Acceleration',
-              hAxis: {
-                title: 'Time (s)'
-              },
-              vAxis: {
-                title: 'Acceleration (m/s/s)',
-              }
-            }}
-            loading={<h3>Loading...</h3>}
-            series={{
-              0: {
-                //curveType: 'function'
-              }
-            }}
-            data={data.accelerations}
-          />
-        );
-        setSpeedChart(
-          <Chart
-            width={'100%'}
-            height={'50vh'}
-            chartType={'LineChart'}
-            options={{
-              title: 'Hand Helicopter Speed',
-              hAxis: {
-                title: 'Time (s)'
-              },
-              vAxis: {
-                title: 'Speed (m/s)',
-              },
-              0: {
-                //curveType: 'function'
-              }
-            }}
-            loader={<h3>Loading...</h3>}
-            data={data.speeds}
-          />
-        );
-        document.getElementById('result').hidden = false;
-        document.getElementById('calculating').hidden = true;
-        //TODO
-        Cookies.set('maxHeight', null);*/
-        data.
+    fetch('/api/graph', {
+      method: 'POST', body: JSON.stringify({Cl: event.target.Cl.value})}).then(r => {
+        r.json().then(data => {
+          let vhs = [['x', 'y']];
+          let accs = [['x', 'y']];
+          let vvs = [['x', 'y']];
+          let ss = [['x', 'y']];
+          for(let i = 0; i < 10000; i++) {
+            let millisec = i / 1000;
+            vhs.push([millisec, data.vh[i]]);
+            accs.push([millisec, data.a[i]]);
+            vvs.push([millisec, data.vv[i]]);
+            ss.push([millisec, data.s[i]]);
+          }
+          setAccChart(
+            <Chart
+              width={'100%'}
+              height={'50vh'}
+              chartType={'LineChart'}
+              options={{
+                title: 'Hand Helicopter Acceleration',
+                hAxis: {
+                  title: 'Time (s)'
+                },
+                vAxis: {
+                  title: 'Acceleration (m/s/s)',
+                }
+              }}
+              loading={<h3>Loading...</h3>}
+              series={{
+                0: {
+                  //curveType: 'function'
+                }
+              }}
+              data={accs}
+            />
+          );
+          setHoriVelChart(
+            <Chart
+              width={'100%'}
+              height={'50vh'}
+              chartType={'LineChart'}
+              options={{
+                title: 'Hand Helicopter Horizontal Velocity',
+                hAxis: {
+                  title: 'Time (s)'
+                },
+                vAxis: {
+                  title: 'Velocity (m/s)',
+                },
+                0: {
+                  //curveType: 'function'
+                }
+              }}
+              loader={<h3>Loading...</h3>}
+              data={vhs}
+            />
+          );
+          setVertVelChart(
+            <Chart
+              width={'100%'}
+              height={'50vh'}
+              chartType={'LineChart'}
+              options={{
+                title: 'Hand Helicopter Vertical Velocity',
+                hAxis: {
+                  title: 'Time (s)'
+                },
+                vAxis: {
+                  title: 'Velocity (m/s)',
+                  viewWindow: {
+                    min: -5,
+                    max: 3
+                  }
+                },
+                0: {
+                  //curveType: 'function'
+                }
+              }}
+              loader={<h3>Loading...</h3>}
+              data={vvs}
+            />
+          );
+          setDisplacementChart(
+            <Chart
+              width={'100%'}
+              height={'50vh'}
+              chartType={'LineChart'}
+              options={{
+                title: 'Hand Helicopter Displacement',
+                hAxis: {
+                  title: 'Time (s)'
+                },
+                vAxis: {
+                  title: 'Metres (m)',
+                  viewWindow: {
+                    min: -0.1,
+                    max: 5
+                  }
+                },
+                0: {
+                  //curveType: 'function'
+                }
+              }}
+              loader={<h3>Loading...</h3>}
+              data={ss}
+            />
+          );
+          document.getElementById('result').hidden = false;
+          document.getElementById('calculating').hidden = true;
+        });
       });
-    })
-  });
+  }
   return (
     <>
       <Container fluid={true} className={'d-flex justify-content-center align-items-center mt-2'}>
@@ -95,7 +157,9 @@ d) Change the scale on time
             <hr/>
             <h3>Result</h3>
             {accChart}
-            {speedChart}
+            {vertVelChart}
+            {horiVelChart}
+            {displacementChart}
             <Button color={'danger'} outline={true} onClick={reset}>Reset</Button>
           </div>
           <hr/>
