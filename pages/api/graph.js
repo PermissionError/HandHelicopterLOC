@@ -8,14 +8,14 @@ export default function handler(req, res) {
   let vv = 0;
   let s = 0;
   //TODO This is not right
-  let vh = 12.174;
+  let vh = 29.17;
   let horivelocities = [vh];
   let accelerations = [a];
   let displacements = [s];
   let vertvelocities = [vv];
   //0.09426816
   for(let i = 1; i < 10000; i++) {
-    vh = vh - ((1/1000) * 0.1178352 * vh**2);
+    vh = vh - ((1/1000) * 1 * vh**2);
 
     a = ( ((cl * p * (vh**2) * A / 2) - (9.81 * mb)) / mb);
     vv = vv + (1/1000) * a;
